@@ -1,0 +1,2088 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduTech - Kelajagingizni Biz Bilan Qurin</title>
+    <style>
+        /* ===== GLOBAL RESET & VARIABLES ===== */
+        :root {
+            --primary: #6c5ce7;
+            --primary-dark: #5a4bd1;
+            --secondary: #00cec9;
+            --accent: #fd79a8;
+            --dark: #2d3436;
+            --light: #f8f9fa;
+            --gray: #636e72;
+            --white: #ffffff;
+            --shadow: 0 10px 30px rgba(0,0,0,0.1);
+            --shadow-hover: 0 20px 40px rgba(108, 92, 231, 0.3);
+            --radius: 16px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: var(--white);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-title p {
+            color: var(--gray);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .btn-secondary {
+            background: var(--white);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        /* ===== PRELOADER ===== */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--white);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loader {
+            width: 60px;
+            height: 60px;
+            border: 4px solid var(--light);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ===== NAVIGATION ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 0;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .navbar.scrolled {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            padding: 15px 0;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            text-decoration: none;
+            color: var(--primary);
+        }
+
+        .logo span {
+            color: var(--secondary);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 35px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-buttons .btn {
+            padding: 10px 24px;
+            font-size: 0.9rem;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--dark);
+            transition: var(--transition);
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            top: -200px;
+            right: -200px;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, var(--accent), var(--primary));
+            border-radius: 50%;
+            bottom: -100px;
+            left: -100px;
+            opacity: 0.1;
+            animation: float 8s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-30px); }
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .hero-text h1 span {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-text p {
+            font-size: 1.2rem;
+            color: var(--gray);
+            margin-bottom: 30px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .hero-image {
+            position: relative;
+        }
+
+        .hero-image-placeholder {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 5rem;
+            box-shadow: var(--shadow-hover);
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat h3 {
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        .hero-stat p {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        /* ===== STATS SECTION ===== */
+        .stats {
+            padding: 80px 0;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 30px;
+        }
+
+        .stat-item .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .stat-item p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* ===== COURSES SECTION ===== */
+        .courses {
+            padding: 100px 0;
+            background: var(--light);
+        }
+
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 24px;
+            border: 2px solid var(--primary);
+            background: transparent;
+            color: var(--primary);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .course-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.5s forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .course-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .course-image {
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--white);
+        }
+
+        .course-content {
+            padding: 25px;
+        }
+
+        .course-tag {
+            display: inline-block;
+            padding: 5px 15px;
+            background: rgba(108, 92, 231, 0.1);
+            color: var(--primary);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .course-content h3 {
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .course-content p {
+            color: var(--gray);
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        .course-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .course-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .course-rating {
+            color: #f39c12;
+        }
+
+        /* ===== PRICING SECTION ===== */
+        .pricing {
+            padding: 100px 0;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .pricing-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 40px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .pricing-card.popular {
+            border: 2px solid var(--primary);
+            transform: scale(1.05);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: var(--white);
+            padding: 5px 20px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .pricing-card.popular:hover {
+            transform: scale(1.05) translateY(-10px);
+        }
+
+        .pricing-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .pricing-card .price {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 20px 0;
+        }
+
+        .pricing-card .price span {
+            font-size: 1rem;
+            color: var(--gray);
+            font-weight: 400;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin: 30px 0;
+            text-align: left;
+        }
+
+        .pricing-features li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pricing-features li::before {
+            content: '✓';
+            color: var(--secondary);
+            font-weight: bold;
+        }
+
+        .pricing-features li.disabled::before {
+            content: '✕';
+            color: #e74c3c;
+        }
+
+        .pricing-features li.disabled {
+            color: #ccc;
+        }
+
+        /* ===== INSTRUCTORS SECTION ===== */
+        .instructors {
+            padding: 100px 0;
+            background: var(--light);
+        }
+
+        .instructors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .instructor-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 30px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .instructor-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .instructor-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--white);
+        }
+
+        .instructor-card h3 {
+            margin-bottom: 5px;
+        }
+
+        .instructor-card .role {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .instructor-card p {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        /* ===== TESTIMONIALS ===== */
+        .testimonials {
+            padding: 100px 0;
+        }
+
+        .testimonials-slider {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .testimonial-slide {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            animation: fadeIn 0.5s;
+        }
+
+        .testimonial-slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .testimonial-text {
+            font-size: 1.3rem;
+            font-style: italic;
+            color: var(--gray);
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .testimonial-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--white);
+        }
+
+        .testimonial-info h4 {
+            margin-bottom: 5px;
+        }
+
+        .testimonial-info p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .slider-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .slider-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid var(--primary);
+            background: transparent;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+
+        .slider-btn:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        /* ===== FAQ SECTION ===== */
+        .faq {
+            padding: 100px 0;
+            background: var(--light);
+        }
+
+        .faq-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: var(--white);
+            border-radius: var(--radius);
+            margin-bottom: 15px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .faq-question:hover {
+            background: rgba(108, 92, 231, 0.05);
+        }
+
+        .faq-question h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .faq-icon {
+            font-size: 1.5rem;
+            color: var(--primary);
+            transition: var(--transition);
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .faq-answer p {
+            padding: 0 25px 25px;
+            color: var(--gray);
+            line-height: 1.8;
+        }
+
+        /* ===== CONTACT SECTION ===== */
+        .contact {
+            padding: 100px 0;
+        }
+
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+        }
+
+        .contact-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+
+        .contact-info p {
+            color: var(--gray);
+            margin-bottom: 30px;
+        }
+
+        .contact-details {
+            list-style: none;
+        }
+
+        .contact-details li {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .contact-details li span {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.3rem;
+        }
+
+        .contact-form {
+            background: var(--white);
+            padding: 40px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 14px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.1);
+        }
+
+        .form-group textarea {
+            height: 150px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        /* ===== NEWSLETTER ===== */
+        .newsletter {
+            padding: 80px 0;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            text-align: center;
+        }
+
+        .newsletter h2 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .newsletter p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+
+        .newsletter-form {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+            gap: 15px;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+        }
+
+        .newsletter-form input:focus {
+            outline: none;
+        }
+
+        .newsletter-form button {
+            padding: 16px 32px;
+            background: var(--secondary);
+            color: var(--white);
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .newsletter-form button:hover {
+            background: #00b894;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--dark);
+            color: var(--white);
+            padding: 80px 0 30px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .footer-about .logo {
+            color: var(--white);
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .footer-about p {
+            color: #b2bec3;
+            margin-bottom: 20px;
+        }
+
+        .footer h4 {
+            margin-bottom: 25px;
+            font-size: 1.2rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: #b2bec3;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #636e72;
+            padding-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .footer-bottom p {
+            color: #b2bec3;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 15px;
+        }
+
+        .footer-social a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #636e72;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-social a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        /* ===== SCROLL TO TOP ===== */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.3rem;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            z-index: 999;
+        }
+
+        .scroll-top.visible {
+            display: flex;
+        }
+
+        .scroll-top:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+        }
+
+        /* ===== TOAST NOTIFICATION ===== */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--dark);
+            color: var(--white);
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-weight: 600;
+            z-index: 10000;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            background: #00b894;
+        }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            animation: modalIn 0.3s ease;
+        }
+
+        @keyframes modalIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+            background: none;
+            border: none;
+        }
+
+        .modal h2 {
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .modal .btn {
+            width: 100%;
+            text-align: center;
+        }
+
+        /* ===== DARK MODE TOGGLE ===== */
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--dark);
+            color: var(--white);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.3rem;
+            box-shadow: var(--shadow);
+            z-index: 999;
+            transition: var(--transition);
+        }
+
+        body.dark-mode {
+            --white: #1a1a2e;
+            --light: #16213e;
+            --dark: #e0e0e0;
+            --gray: #b2bec3;
+        }
+
+        body.dark-mode .navbar.scrolled {
+            background: rgba(26, 26, 46, 0.95);
+        }
+
+        body.dark-mode .course-card,
+        body.dark-mode .pricing-card,
+        body.dark-mode .instructor-card,
+        body.dark-mode .faq-item,
+        body.dark-mode .contact-form {
+            background: #16213e;
+        }
+
+        body.dark-mode .form-group input,
+        body.dark-mode .form-group textarea,
+        body.dark-mode .form-group select {
+            background: #1a1a2e;
+            color: #e0e0e0;
+            border-color: #636e72;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 992px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .hero-stats {
+                justify-content: center;
+            }
+
+            .hero-image {
+                order: -1;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .contact-content {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links, .nav-buttons {
+                display: none;
+            }
+
+            .nav-links.active {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--white);
+                padding: 30px;
+                box-shadow: var(--shadow);
+                gap: 20px;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .section-title h2 {
+                font-size: 2rem;
+            }
+
+            .pricing-card.popular {
+                transform: none;
+            }
+
+            .pricing-card.popular:hover {
+                transform: translateY(-10px);
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-bottom {
+                justify-content: center;
+                text-align: center;
+            }
+        }
+
+        /* ===== ANIMATIONS ===== */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .animate-on-scroll.animated {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="#" class="logo">Edu<span>Tech</span></a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#hero">Bosh sahifa</a></li>
+                <li><a href="#courses">Kurslar</a></li>
+                <li><a href="#pricing">Narxlar</a></li>
+                <li><a href="#instructors">Ustozlar</a></li>
+                <li><a href="#testimonials">Fikrlar</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="#contact">Aloqa</a></li>
+            </ul>
+            <div class="nav-buttons">
+                <a href="#" class="btn btn-secondary" onclick="openModal()">Kirish</a>
+                <a href="#" class="btn btn-primary">Ro'yxatdan o'tish</a>
+            </div>
+            <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="container hero-content">
+            <div class="hero-text">
+                <h1>Kelajagingizni <span>EduTech</span> bilan boshlang</h1>
+                <p>Professional ustozlar yordamida zamonaviy ko'nikmalarni o'rganing. Online kurslarimiz orqali istalgan joydan, istalgan vaqtda ta'lim oling.</p>
+                <div class="hero-buttons">
+                    <a href="#courses" class="btn btn-primary">Kurslarni ko'rish</a>
+                    <a href="#" class="btn btn-secondary" onclick="openModal()">▶ Bepul dars</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <h3 id="stat1">0</h3>
+                        <p>O'quvchilar</p>
+                    </div>
+                    <div class="hero-stat">
+                        <h3 id="stat2">0</h3>
+                        <p>Kurslar</p>
+                    </div>
+                    <div class="hero-stat">
+                        <h3 id="stat3">0</h3>
+                        <p>Ustozlar</p>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="hero-image-placeholder">🎓</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">50K+</div>
+                    <p>Ro'yxatdan o'tganlar</p>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">200+</div>
+                    <p>Online kurslar</p>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">150+</div>
+                    <p>Professional ustozlar</p>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">98%</div>
+                    <p>Muvaffaqiyat darajasi</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Courses Section -->
+    <section class="courses" id="courses">
+        <div class="container">
+            <div class="section-title animate-on-scroll">
+                <h2>Mashhur Kurslar</h2>
+                <p>Eng ko'p talab qilinadigan yo'nalishlar bo'yicha professional kurslar</p>
+            </div>
+            <div class="filter-buttons animate-on-scroll">
+                <button class="filter-btn active" data-filter="all">Barchasi</button>
+                <button class="filter-btn" data-filter="programming">Dasturlash</button>
+                <button class="filter-btn" data-filter="design">Dizayn</button>
+                <button class="filter-btn" data-filter="business">Biznes</button>
+                <button class="filter-btn" data-filter="language">Tillar</button>
+            </div>
+            <div class="courses-grid" id="coursesGrid">
+                <!-- Kurslar JS orqali yuklanadi -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <div class="section-title animate-on-scroll">
+                <h2>Narxlar Rejasi</h2>
+                <p>O'zingizga mos rejani tanlang va bugunoq o'rganishni boshlang</p>
+            </div>
+            <div class="pricing-grid">
+                <div class="pricing-card animate-on-scroll">
+                    <h3>💼 Boshlang'ich</h3>
+                    <p>Bepul</p>
+                    <div class="price">$0 <span>/oy</span></div>
+                    <ul class="pricing-features">
+                        <li>5 ta bepul kurs</li>
+                        <li>Forumda savol berish</li>
+                        <li>Sertifikat yo'q</li>
+                        <li class="disabled">Mentor ko'magi</li>
+                        <li class="disabled">Premium materiallar</li>
+                    </ul>
+                    <a href="#" class="btn btn-secondary" style="width:100%;text-align:center;">Boshlash</a>
+                </div>
+                <div class="pricing-card popular animate-on-scroll">
+                    <div class="popular-badge">⭐ Mashhur</div>
+                    <h3>🚀 Professional</h3>
+                    <p>Eng ko'p tanlangan</p>
+                    <div class="price">$29 <span>/oy</span></div>
+                    <ul class="pricing-features">
+                        <li>Barcha kurslar</li>
+                        <li>Forumda savol berish</li>
+                        <li>Rasmiy sertifikat</li>
+                        <li>Mentor ko'magi</li>
+                        <li class="disabled">Premium materiallar</li>
+                    </ul>
+                    <a href="#" class="btn btn-primary" style="width:100%;text-align:center;">Tanlash</a>
+                </div>
+                <div class="pricing-card animate-on-scroll">
+                    <h3>👑 Premium</h3>
+                    <p>To'liq imkoniyatlar</p>
+                    <div class="price">$59 <span>/oy</span></div>
+                    <ul class="pricing-features">
+                        <li>Barcha kurslar</li>
+                        <li>Forumda savol berish</li>
+                        <li>Rasmiy sertifikat</li>
+                        <li>Shaxsiy mentor</li>
+                        <li>Premium materiallar</li>
+                    </ul>
+                    <a href="#" class="btn btn-secondary" style="width:100%;text-align:center;">Tanlash</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Instructors Section -->
+    <section class="instructors" id="instructors">
+        <div class="container">
+            <div class="section-title animate-on-scroll">
+                <h2>Bizning Ustozlar</h2>
+                <p>Soha mutaxassislari va tajribali o'qituvchilar</p>
+            </div>
+            <div class="instructors-grid">
+                <div class="instructor-card animate-on-scroll">
+                    <div class="instructor-avatar" style="background: linear-gradient(135deg, #6c5ce7, #a29bfe);">👨‍💻</div>
+                    <h3>Azizbek Rahimov</h3>
+                    <p class="role">Full-Stack Developer</p>
+                    <p>10+ yillik tajriba. Google va Amazon kompaniyalarida ishlagan.</p>
+                    <div class="social-links">
+                        <a href="#">in</a>
+                        <a href="#">𝕏</a>
+                        <a href="#">🌐</a>
+                    </div>
+                </div>
+                <div class="instructor-card animate-on-scroll">
+                    <div class="instructor-avatar" style="background: linear-gradient(135deg, #00cec9, #81ecec);">👩‍🎨</div>
+                    <h3>Nilufar Karimova</h3>
+                    <p class="role">UI/UX Designer</p>
+                    <p>8+ yillik tajriba. Adobe Certified Expert. 50+ loyiha.</p>
+                    <div class="social-links">
+                        <a href="#">in</a>
+                        <a href="#">𝕏</a>
+                        <a href="#">🌐</a>
+                    </div>
+                </div>
+                <div class="instructor-card animate-on-scroll">
+                    <div class="instructor-avatar" style="background: linear-gradient(135deg, #fd79a8, #e84393);">👨‍📊</div>
+                    <h3>Jasur Toshmatov</h3>
+                    <p class="role">Data Scientist</p>
+                    <p>PhD. Python, Machine Learning va AI sohasida mutaxassis.</p>
+                    <div class="social-links">
+                        <a href="#">in</a>
+                        <a href="#">𝕏</a>
+                        <a href="#">🌐</a>
+                    </div>
+                </div>
+                <div class="instructor-card animate-on-scroll">
+                    <div class="instructor-avatar" style="background: linear-gradient(135deg, #fdcb6e, #f39c12);">👩‍💼</div>
+                    <h3>Madina Aliyeva</h3>
+                    <p class="role">Marketing Expert</p>
+                    <p>12+ yillik tajriba. Digital Marketing va SEO bo'yicha mutaxassis.</p>
+                    <div class="social-links">
+                        <a href="#">in</a>
+                        <a href="#">𝕏</a>
+                        <a href="#">🌐</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <div class="section-title animate-on-scroll">
+                <h2>O'quvchilar Fikrlari</h2>
+                <p>Bizning o'quvchilarimiz nima deyishadi</p>
+            </div>
+            <div class="testimonials-slider animate-on-scroll">
+                <div class="testimonial-slide active">
+                    <p class="testimonial-text">"EduTech platformasi orqali dasturlashni noldan o'rganib, 6 oyda ishga kirdim. Ustozlar juda professional va kurslar tushunarli!"</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar" style="background: linear-gradient(135deg, #6c5ce7, #a29bfe);">👤</div>
+                        <div class="testimonial-info">
+                            <h4>Sardorbek Umarov</h4>
+                            <p>Junior Developer</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-slide">
+                    <p class="testimonial-text">"Dizayn kurslari menga juda yoqdi. Amaliy loyihalar orqali ko'nikmalarimni oshirdim. Hozir freelancer sifatida yaxshi daromad qilaman."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar" style="background: linear-gradient(135deg, #00cec9, #81ecec);">👤</div>
+                        <div class="testimonial-info">
+                            <h4>Dilnoza Saidova</h4>
+                            <p>UI/UX Designer</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-slide">
+                    <p class="testimonial-text">"Data Science kursini tamomlaganimdan so'ng, xalqaro kompaniyada ishga kirdim. EduTech - bu haqiqiy ta'lim maskani!"</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar" style="background: linear-gradient(135deg, #fd79a8, #e84393);">👤</div>
+                        <div class="testimonial-info">
+                            <h4>Bobur Xasanov</h4>
+                            <p>Data Analyst</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="slider-controls">
+                    <button class="slider-btn" onclick="prevSlide()">←</button>
+                    <button class="slider-btn" onclick="nextSlide()">→</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq" id="faq">
+        <div class="container">
+            <div class="section-title animate-on-scroll">
+                <h2>Ko'p Beriladigan Savollar</h2>
+                <p>Eng ko'p beriladigan savollarga javoblar</p>
+            </div>
+            <div class="faq-list">
+                <div class="faq-item animate-on-scroll">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <h3>Kurslarni qanday boshlash mumkin?</h3>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Ro'yxatdan o'ting, o'zingizga mos kursni tanlang va "Boshlash" tugmasini bosing. Boshlang'ich rejada 5 ta kurs bepul mavjud. Premium rejada barcha kurslarga cheksiz kirish imkoniyati bor.</p>
+                    </div>
+                </div>
+                <div class="faq-item animate-on-scroll">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <h3>Sertifikat beriladimi?</h3>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Ha! Professional va Premium rejalarda kursni muvaffaqiyatli tugatganingizda rasmiy sertifikat beriladi. Bu sertifikat LinkedIn va boshqa platformalarda ishlatish mumkin.</p>
+                    </div>
+                </div>
+                <div class="faq-item animate-on-scroll">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <h3>To'lov qanday amalga oshiriladi?</h3>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Payme, Click, Visa/Mastercard kartalari orqali to'lov qilishingiz mumkin. Shuningdek, bank o'tkazmasi va naqd to'lov ham qabul qilinadi.</p>
+                    </div>
+                </div>
+                <div class="faq-item animate-on-scroll">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <h3>Kurslar qancha vaqt davom etadi?</h3>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Kurslar o'rtacha 2-6 oy davom etadi. Siz o'z tezligingizda o'rganishingiz mumkin. Ba'zi kurslar bir umrlik kirish huquqiga ega.</p>
+                    </div>
+                </div>
+                <div class="faq-item animate-on-scroll">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <h3>Pul qaytarish siyosati qanday?</h3>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>30 kun ichida pulni to'liq qaytarish kafolati bor. Agar kurs sizga yoqmasa, hech qanday savolsiz pulingizni qaytaramiz.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="section-title animate-on-scroll">
+                <h2>Biz Bilan Bog'laning</h2>
+                <p>Savollaringiz bormi? Biz doimo yordam berishga tayyormiz</p>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info animate-on-scroll">
+                    <h3>Aloqa Ma'lumotlari</h3>
+                    <p>Bizga murojaat qiling va 24 soat ichida javob oling. Sizning muvaffaqiyatingiz - bizning maqsadimiz!</p>
+                    <ul class="contact-details">
+                        <li>
+                            <span>📍</span>
+                            <div>
+                                <strong>Manzil</strong><br>
+                                Toshkent, Yunusobod tumani, Amir Temur ko'chasi, 108
+                            </div>
+                        </li>
+                        <li>
+                            <span>📞</span>
+                            <div>
+                                <strong>Telefon</strong><br>
+                                +998 94 747 85 25
+                            </div>
+                        </li>
+                        <li>
+                            <span>✉️</span>
+                            <div>  
+                                <strong>Email</strong><br>
+                                mmadaminova319@gmail.com
+                            </div>
+                        </li>
+                        <li>
+                            <span>🕐</span>
+                            <div>
+                                <strong>Ish vaqti</strong><br>
+                                Dushanba - Shanba: 09:00 - 21:00
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <form class="contact-form animate-on-scroll" id="contactForm" onsubmit="submitForm(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Ismingiz *</label>
+                            <input type="text" placeholder="Ismingizni kiriting" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Telefon *</label>
+                            <input type="tel" placeholder="+998 90 123 45 67" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Email *</label>
+                        <input type="email" placeholder="email@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Mavzu</label>
+                        <select>
+                            <option value="">Mavzuni tanlang</option>
+                            <option>Kurslar haqida</option>
+                            <option>To'lov masalasi</option>
+                            <option>Texnik muammo</option>
+                            <option>Hamkorlik</option>
+                            <option>Boshqa</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Xabaringiz *</label>
+                        <textarea placeholder="Xabaringizni yozing..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width:100%;text-align:center;">📤 Xabar yuborish</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter">
+        <div class="container">
+            <h2>📬 Yangiliklardan Xabardor Bo'ling</h2>
+            <p>Eng so'nggi kurslar va maxsus takliflardan birinchi bo'lib xabardor bo'ling</p>
+            <form class="newsletter-form" onsubmit="subscribeNewsletter(event)">
+                <input type="email" placeholder="Email manzilingiz" required>
+                <button type="submit">Obuna bo'lish</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <a href="#" class="logo">Edu<span>Tech</span></a>
+                    <p>EduTech - bu zamonaviy online ta'lim platformasi. Bizning maqsadimiz har bir insonga sifatli ta'lim imkoniyatini yaratish.</p>
+                    <div class="footer-social">
+                        <a href="#">f</a>
+                        <a href="#">𝕏</a>
+                        <a href="#">in</a>
+                        <a href="#">▶</a>
+                    </div>
+                </div>
+                <div>
+                    <h4>Kurslar</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Dasturlash</a></li>
+                        <li><a href="#">Web Dizayn</a></li>
+                        <li><a href="#">Data Science</a></li>
+                        <li><a href="#">Marketing</a></li>
+                        <li><a href="#">Tillar</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Kompaniya</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Biz haqimizda</a></li>
+                        <li><a href="#">Ustozlar</a></li>
+                        <li><a href="#">Karera</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Hamkorlik</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Yordam</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Qo'llanma</a></li>
+                        <li><a href="#">Maxfiylik</a></li>
+                        <li><a href="#">Shartlar</a></li>
+                        <li><a href="#">Aloqa</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 EduTech. Barcha huquqlar himoyalangan.</p>
+                <p>❤️ bilan O'zbekistonda yaratilgan</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button class="scroll-top" id="scrollTop" onclick="scrollToTop()">↑</button>
+
+    <!-- Dark Mode Toggle -->
+    <button class="dark-mode-toggle" id="darkModeToggle" onclick="toggleDarkMode()">🌙</button>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Login Modal -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal()">✕</button>
+            <h2>🔐 Kirish</h2>
+            <form onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" placeholder="email@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Parol</label>
+                    <input type="password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Kirish</button>
+                <p style="text-align:center;margin-top:15px;color:var(--gray);">
+                    Hisobingiz yo'qmi? <a href="#" style="color:var(--primary);">Ro'yxatdan o'ting</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // ===== COURSE DATA =====
+        const courses = [
+            {
+                id: 1,
+                title: "Python Dasturlash",
+                description: "Python tilini noldan o'rganing. OOP, Django, Flask va boshqa frameworklar.",
+                category: "programming",
+                price: "$49",
+                rating: "4.9 ⭐",
+                color: "#6c5ce7",
+                tag: "Dasturlash"
+            },
+            {
+                id: 2,
+                title: "JavaScript & React",
+                description: "Zamonaviy web dasturlash. React, Node.js va to'liq stack loyihalar.",
+                category: "programming",
+                price: "$59",
+                rating: "4.8 ⭐",
+                color: "#00cec9",
+                tag: "Dasturlash"
+            },
+            {
+                id: 3,
+                title: "UI/UX Dizayn",
+                description: "Figma va Adobe XD orqali professional interfeys dizayni.",
+                category: "design",
+                price: "$39",
+                rating: "4.9 ⭐",
+                color: "#fd79a8",
+                tag: "Dizayn"
+            },
+            {
+                id: 4,
+                title: "Digital Marketing",
+                description: "SEO, SMM, Google Ads va kontent marketing strategiyalari.",
+                category: "business",
+                price: "$35",
+                rating: "4.7 ⭐",
+                color: "#fdcb6e",
+                tag: "Biznes"
+            },
+            {
+                id: 5,
+                title: "Ingliz Tili",
+                description: "IELTS va CEFR standartlari bo'yicha ingliz tili kursi.",
+                category: "language",
+                price: "$29",
+                rating: "4.8 ⭐",
+                color: "#a29bfe",
+                tag: "Tillar"
+            },
+            {
+                id: 6,
+                title: "Data Science",
+                description: "Python, Pandas, Machine Learning va AI asoslari.",
+                category: "programming",
+                price: "$69",
+                rating: "4.9 ⭐",
+                color: "#e17055",
+                tag: "Dasturlash"
+            },
+            {
+                id: 7,
+                title: "Grafik Dizayn",
+                description: "Photoshop, Illustrator va CorelDraw da professional dizayn.",
+                category: "design",
+                price: "$45",
+                rating: "4.6 ⭐",
+                color: "#00b894",
+                tag: "Dizayn"
+            },
+            {
+                id: 8,
+                title: "Biznes Boshqaruvi",
+                description: "Startap yaratish, moliyaviy boshqaruv va liderlik ko'nikmalari.",
+                category: "business",
+                price: "$55",
+                rating: "4.8 ⭐",
+                color: "#e84393",
+                tag: "Biznes"
+            },
+            {
+                id: 9,
+                title: "Rus Tili",
+                description: "Grammatika, gapirish va yozish ko'nikmalarini rivojlantirish.",
+                category: "language",
+                price: "$25",
+                rating: "4.7 ⭐",
+                color: "#74b9ff",
+                tag: "Tillar"
+            }
+        ];
+
+        // ===== RENDER COURSES =====
+        function renderCourses(filter = 'all') {
+            const grid = document.getElementById('coursesGrid');
+            grid.innerHTML = '';
+            
+            const filtered = filter === 'all' 
+                ? courses 
+                : courses.filter(c => c.category === filter);
+            
+            filtered.forEach((course, index) => {
+                const card = document.createElement('div');
+                card.className = 'course-card';
+                card.style.animationDelay = `${index * 0.1}s`;
+                card.innerHTML = `
+                    <div class="course-image" style="background: linear-gradient(135deg, ${course.color}, ${course.color}dd);">
+                        📚
+                    </div>
+                    <div class="course-content">
+                        <span class="course-tag">${course.tag}</span>
+                        <h3>${course.title}</h3>
+                        <p>${course.description}</p>
+                        <div class="course-meta">
+                            <span class="course-price">${course.price}</span>
+                            <span class="course-rating">${course.rating}</span>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // ===== FILTER BUTTONS =====
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                renderCourses(btn.dataset.filter);
+            });
+        });
+
+        // ===== PRELOADER =====
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const preloader = document.getElementById('preloader');
+                preloader.style.opacity = '0';
+                setTimeout(() => preloader.style.display = 'none', 500);
+            }, 1000);
+            
+            // Initial render
+            renderCourses();
+            
+            // Animate hero stats
+            animateCounter('stat1', 50000, 2000, '+');
+            animateCounter('stat2', 200, 2000, '+');
+            animateCounter('stat3', 150, 2000, '+');
+        });
+
+        // ===== COUNTER ANIMATION =====
+        function animateCounter(id, target, duration, suffix = '') {
+            const el = document.getElementById(id);
+            if (!el) return;
+            
+            let start = 0;
+            const step = target / (duration / 16);
+            
+            const timer = setInterval(() => {
+                start += step;
+                if (start >= target) {
+                    start = target;
+                    clearInterval(timer);
+                }
+                el.textContent = Math.floor(start).toLocaleString() + suffix;
+            }, 16);
+        }
+
+        // ===== NAVBAR SCROLL =====
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            const scrollTop = document.getElementById('scrollTop');
+            
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+            
+            if (window.scrollY > 500) {
+                scrollTop.classList.add('visible');
+            } else {
+                scrollTop.classList.remove('visible');
+            }
+            
+            // Animate elements on scroll
+            document.querySelectorAll('.animate-on-scroll').forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight - 100) {
+                    el.classList.add('animated');
+                }
+            });
+        });
+
+        // ===== MOBILE MENU =====
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            const hamburger = document.getElementById('hamburger');
+            navLinks.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        }
+
+        // Close menu on link click
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('navLinks').classList.remove('active');
+            });
+        });
+
+        // ===== TESTIMONIALS SLIDER =====
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.testimonial-slide');
+
+        function showSlide(index) {
+            slides.forEach(s => s.classList.remove('active'));
+            currentSlide = (index + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+
+        function nextSlide() { showSlide(currentSlide + 1); }
+        function prevSlide() { showSlide(currentSlide - 1); }
+
+        // Auto slide
+        setInterval(nextSlide, 5000);
+
+        // ===== FAQ ACCORDION =====
+        function toggleFaq(element) {
+            const item = element.parentElement;
+            const answer = item.querySelector('.faq-answer');
+            const isActive = item.classList.contains('active');
+            
+            // Close all
+            document.querySelectorAll('.faq-item').forEach(i => {
+                i.classList.remove('active');
+                i.querySelector('.faq-answer').style.maxHeight = '0';
+            });
+            
+            if (!isActive) {
+                item.classList.add('active');
+                answer.style.maxHeight = answer.scrollHeight + 'px';
+            }
+        }
+
+        // ===== CONTACT FORM =====
+        function submitForm(e) {
+            e.preventDefault();
+            showToast('✅ Xabaringiz muvaffaqiyatli yuborildi!', 'success');
+            e.target.reset();
+        }
+
+        // ===== NEWSLETTER =====
+        function subscribeNewsletter(e) {
+            e.preventDefault();
+            showToast('✅ Muvaffaqiyatli obuna bo\'ldingiz!', 'success');
+            e.target.reset();
+        }
+
+        // ===== TOAST =====
+        function showToast(message, type = '') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast show ' + type;
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // ===== MODAL =====
+        function openModal() {
+            document.getElementById('loginModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('loginModal').classList.remove('active');
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            closeModal();
+            showToast('✅ Muvaffaqiyatli kirdingiz!', 'success');
+        }
+
+        // Close modal on overlay click
+        document.getElementById('loginModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('loginModal')) {
+                closeModal();
+            }
+        });
+
+        // ===== SCROLL TO TOP =====
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ===== DARK MODE =====
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const btn = document.getElementById('darkModeToggle');
+            btn.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+        }
+
+        // ===== KEYBOARD SHORTCUTS =====
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+            if (e.key === 'd' && e.ctrlKey) {
+                e.preventDefault();
+                toggleDarkMode();
+            }
+        });
+    </script>
+</body>
+</html>
